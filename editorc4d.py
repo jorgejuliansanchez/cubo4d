@@ -3,37 +3,17 @@ print("editorc4d.py")
 import cv2
 import numpy as np
 image = cv2.imread("Medellin4D_img.jpg")
+points="106,237 120,343 139,410 170,468 212,497 248,509 295,507 349,487 387,459 421,416 449,367 460,297 450,226 429,112 386,61 332,29 271,15 221,35 186,62 143,114 118,151 104,201 106,237 "
+points = points.split()
+points = map(lambda p: tuple(map(int, p.split(','))), points)
+puntos=[]
+for point in points:
+  puntos.append([point[0], point[1]])
 
-puntos = np.array([])
-points="212,230 217,228 227,237 233,232"
-points=points.split()
-for punto in points:
-    punto=punto.replace(","," ")
-    puntos = np.append(puntos, punto)	
-
-print(puntos)
-print(type(puntos))
-print(puntos.shape)
-
-#puntos = puntos.reshape((-1, 1, 2))
-print(puntos)
-print(type(puntos))
-print(puntos.shape)
-
-
-points = [[40, 109], [182, 343], [338, 345], [542, 292], [742, 322], [890, 221]]  
-print(points)
-print(type(points))
-points = np.array(points)
-print(points)
-print(type(points))
-print(points.shape)
+points = np.array(puntos, dtype=np.int32)
 points = points.reshape((-1, 1, 2))
-print(points)
-print(type(points))
-print(points.shape)
-color = (255, 0, 0)
-thickness = 2
+color = (0, 255, 0)
+thickness = 1
 isClosed = False
 
 image = cv2.polylines(image, [points], isClosed, color, thickness)
