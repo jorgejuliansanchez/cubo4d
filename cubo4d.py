@@ -47,6 +47,7 @@ while True:
     matrix = cv2.getPerspectiveTransform(src,dst)
     result = cv2.warpPerspective(norte, matrix, (512,512))
     imagen[0: 512, 0: 512] = result
+    
     sur=v384[192:384, 0:384]
     cv2.imshow("sur", sur)
     este=v384[0:384, 192:384]

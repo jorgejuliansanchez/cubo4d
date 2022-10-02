@@ -1,0 +1,100 @@
+var x= -240, y= 240, z=16 , t= 0.0625, xmin= -256, xmax= 256, ymin= -256, ymax= 256, zmin= 0, zmax=192, tmin= 0, tmax=1;
+var xant, yant, zant, tant, focox= 0, focoy= 0, p0, p1, p2, p3, p4, p5, p6, p7;
+curso4d();
+if (window.addEventListener) {document.addEventListener('keydown', teclas, false);} else {document.onkeydown = teclas;}
+function teclas(e) {e = window.event || e; tecla(e.keyCode);}
+function tecla(k) {
+    console.log(k);
+	if (k === 37 || k === 52 || k === 100) { opcion = '_37'; x--;  if (x < xmin) { x = xmin; } ; curso4d();}
+    if (k === 39 || k === 54 || k === 102) { opcion = '_39'; x++;  if (x > xmax) { x = xmax; } ; curso4d();}
+    if (k === 38 || k === 56 || k === 104) { opcion = '_38'; y--;  if (y < ymin) { y = ymin; } ; curso4d();}
+    if (k === 40 || k === 50 || k === 98)  { opcion = '_40'; y++;  if (y > ymax) { y = ymax; } ; curso4d();}
+    if (k === 36 || k === 55 || k === 103) { opcion = '_36'; x--;  if (x < xmin) { x = xmin; } y--; if (y < ymin) { y = ymin; } ; curso4d();}
+    if (k === 33 || k === 57 || k === 105) { opcion = '_33'; x++;  if (x > xmax) { x = xmax; } y--; if (y < ymin) { y = ymin; } ; curso4d();}
+    if (k === 34 || k === 51 || k === 99)  { opcion = '_34'; x++;  if (x > xmax) { x = xmax; } y++; if (y > ymax) { y = ymax; } ; curso4d();}
+    if (k === 35 || k === 49 || k === 97)  { opcion = '_35'; x--;  if (x < xmin) { x = xmin; } y++; if (y > ymax) { y = ymax; } ; curso4d();}
+    if (k === 107) { opcion = '_107'; z++;  if (z > zmax) { z = zmax; } ; curso4d();}
+    if (k === 109) { opcion = '_109'; z--;  if (z < zmin) { z = zmin; } ; curso4d();}
+    if (k === 106) { opcion = '_106'; t=t + 0.01;  if (t > tmax) { t = tmax; } ; curso4d();}
+    if (k === 111) { opcion = '_111'; t=t - 0.01;  if (t < tmin) { t = tmin; } ; curso4d();}
+}
+function curso4d(){
+    if ((x === xant) && (y === yant) && (z === zant) && (t === tant)){
+    } else {
+        p0 = (x - z) + ',' + (y - z);
+        p1 = (x + z) + ',' + (y - z);
+        p2 = (x + z) + ',' + (y + z);
+        p3 = (x - z) + ',' + (y + z);
+        p4 = parseInt((x - (x * t)) - (z - (z * t))) + ',' + parseInt((y - (y * t)) - (z - (z * t)));
+        p5 = parseInt((x - (x * t)) + (z - (z * t))) + ',' + parseInt((y - (y * t)) - (z - (z * t)));
+        p6 = parseInt((x - (x * t)) + (z - (z * t))) + ',' + parseInt((y - (y * t)) + (z - (z * t)));
+        p7 = parseInt((x - (x * t)) - (z - (z * t))) + ',' + parseInt((y - (y * t)) + parseInt(z - (z * t)));
+		
+        if (document.getElementById("_cuadroatras")) {document.getElementById("_cuadroatras").remove();}
+		if (document.getElementById("_cuadroabajo")) {document.getElementById("_cuadroabajo").remove();}
+		if (document.getElementById("_cuadroarriba")) {document.getElementById("_cuadroarriba").remove();}
+		if (document.getElementById("_cuadroderecha")) {document.getElementById("_cuadroderecha").remove();}
+		if (document.getElementById("_cuadroizquierda")) {document.getElementById("_cuadroizquierda").remove();}
+		if (document.getElementById("_cuadrofrente")) {document.getElementById("_cuadrofrente").remove();}
+        if (document.getElementById("_lineacentro")) {document.getElementById("_lineacentro").remove();}
+        if (document.getElementById("_circulof")) {document.getElementById("_circulof").remove();}
+        if (document.getElementById("_circuloa")) {document.getElementById("_circuloa").remove();}
+
+        var cuadroatras     = p4 + ',' + p5 + ',' + p6 + ',' + p7 + ',' + p4;
+        var cuadroizquierda = p4 + "," + p0 + "," + p3 + "," + p7 + "," + p4; 
+        var cuadroabajo     = p3 + "," + p2 + "," + p6 + "," + p7 + "," + p3;
+        var cuadroarriba    = p0 + "," + p1 + "," + p5 + "," + p4 + "," + p0;
+        var cuadroderecha   = p1 + "," + p5 + "," + p6 + "," + p2 + "," + p1;
+        var cuadrofrente    = p0 + ',' + p1 + ',' + p2 + ',' + p3 + ',' + p0;
+        var cuadrante ;
+        if ( y < 0){
+            if ( x < 0){
+                cuadrante= 0;                
+            } else {
+                cuadrante= 1;
+            }			
+        } else {
+		    if ( x < 0){
+                cuadrante= 2;
+            } else {
+                cuadrante= 3;
+            }
+            
+        }
+        //poli4d("_cuadroatras", cuadroatras, "fill: none ; stroke: #007FFF; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+        if (cuadrante==0){
+            poli4d('_cuadroabajo', cuadroabajo, "fill: yellow ; stroke: yellow; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");       
+            if(Math.abs(x) > z){
+                poli4d('_cuadroderecha', cuadroderecha, "fill: green ; stroke: green; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            }
+        }
+        if (cuadrante==1){
+            poli4d('_cuadroabajo', cuadroabajo, "fill: yellow ; stroke: yellow; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");       
+            if(Math.abs(x) > z){
+                poli4d('_cuadroizquierda', cuadroizquierda, "fill: red ; stroke: red; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            }
+        }
+        if (cuadrante==2){
+            poli4d('_cuadroarriba', cuadroarriba, "fill: blue ; stroke: blue; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            if(Math.abs(x) > z){
+                poli4d('_cuadroderecha', cuadroderecha, "fill: green ; stroke: green; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            }
+        }
+        if (cuadrante==3){
+            poli4d('_cuadroarriba', cuadroarriba, "fill: blue ; stroke: blue; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            if(Math.abs(x) > z){
+                poli4d('_cuadroizquierda', cuadroizquierda, "fill: red ; stroke: red; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+            }
+        }
+        poli4d('_cuadrofrente', cuadrofrente, "fill: #007FFF; stroke: #007FFF; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;");
+        xant= x; yant= y; zant= z; tant= t;
+        px= parseInt(x - (x * t));         py = parseInt(y - (y * t));         pt = parseInt(z - (z * t));
+        sty = 'fill: none; stroke: black; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;';
+        circ4d("_circuloa", px, py, pt, sty);
+        var lineacentro= focox + "," + focoy +"," + x + ',' + y  ;
+        sty = 'fill: none; stroke: black; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;';
+        poli4d('_lineacentro', lineacentro, sty);
+        sty = 'fill: none; stroke: black; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;';
+        circ4d("_circulof", x, y, z, sty);
+    }
+}

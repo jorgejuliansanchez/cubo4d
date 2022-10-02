@@ -10,4 +10,4 @@ app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(favicon(__dirname + '/' +'Planeta4D.ico'))
 app.get('/',  (req, res)=>{res.sendFile(__dirname + '/cubo4d.htm');});
 
-http.listen(port, () => {  console.log(`Server running at http://localhost:${port}/`);});
+http.listen(port, () => {  console.log(`Servidor ejecutando en http://localhost:${port}/`);});
